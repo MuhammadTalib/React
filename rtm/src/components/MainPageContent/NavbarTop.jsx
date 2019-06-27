@@ -8,8 +8,7 @@ const NavbarTop = props => {
       style={{
         marginLeft: props.marginLeft,
         backgroundColor: "#f6f6f6",
-        height: "4.0rem",
-        boxShadow: "1px 1px 2px #808080"
+        height: "4.0rem"
       }}
     >
       <h4

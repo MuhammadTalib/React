@@ -60,8 +60,8 @@ const TaskDistribution = props => {
               <td>{row._id}</td>
               <td>{row.count}</td>
               <td>{row.Completed}</td>
-              <td>{(row.Completed / row.count) * 100}%</td>
-              <td>{(row.Completed / row.count) * 100}%</td>
+              <td>{((row.Completed / row.count) * 100).toFixed()}%</td>
+              <td>{((row.Completed / row.count) * 100).toFixed()}%</td>
               <td>
                 <i className="fas fa-arrow-right" />
               </td>

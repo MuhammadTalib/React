@@ -15,6 +15,7 @@ const MainPageContent = props => {
   const verificationPending = () => {};
   const loader = useState(false);
   const [skip, setskip] = useState(0);
+  const [skipTask, setskipTask] = useState(0);
   const [ClientData, setClientdata] = useState({
     ClientsCount: 0,
     client: [],
@@ -78,21 +79,35 @@ const MainPageContent = props => {
     todayStartDate: ""
   });
 
-  const skipForward = () => {
-    console.log("skip", skip);
-    if (skip + 5 < ClientData.ClientsCount) fetchClientData(skip + 5);
+  const skipForward = activePaging => {
+    if (activePaging === "Client") {
+      console.log("skip", skip);
+      if (skip + 5 < ClientData.ClientsCount)
+        fetchClientData(skip + 5, activePaging);
+    } else {
+      console.log("skip", skipTask);
+      if (skipTask + 5 < ClientData.taskCount)
+        fetchClientData(skipTask + 5, activePaging);
+    }
   };
-  const skipBackward = () => {
-    if (skip > 0) fetchClientData(skip - 5);
+  const skipBackward = activePaging => {
+    if (activePaging === "Client") {
+      console.log("skip", skip);
+      if (skip > 0) fetchClientData(skip - 5, activePaging);
+    } else {
+      console.log("skip", skipTask);
+      if (skipTask > 0) fetchClientData(skipTask - 5, activePaging);
+    }
   };
-  const fetchClientData = skipper => {
-    setskip(skipper);
+
+  const fetchClientData = (skipper, activePaging) => {
+    activePaging === "Client" ? setskip(skipper) : setskipTask(skipper);
     console.log("skipper", skipper);
     var data2 = {
       OrganizationName: null,
       SiteID: "5ca1fdd5e7179a0e4090502a",
       Today_Date: { y: year, m: month, d: date },
-      activePaging: "Both",
+      activePaging: activePaging,
       limit: 5,
       skip: skipper
     };
@@ -177,7 +192,7 @@ const MainPageContent = props => {
       .finally(() => {
         loader[1](false);
       });
-    fetchClientData(0);
+    fetchClientData(0, "Both");
   }, []);
   return (
     <div>
@@ -275,6 +290,7 @@ const MainPageContent = props => {
                 <ScheduleCard
                   data={ClientData}
                   skip={skip}
+                  skipTask={skipTask}
                   skipBackward={skipBackward}
                   skipForward={skipForward}
                 />
